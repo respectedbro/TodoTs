@@ -1,11 +1,26 @@
 import "./App.css";
-import type { JSX } from "react";
+import styles from './App.modules.css'
+import {useState} from 'react';
 
-function App(): JSX.Element {
+const DEFAULT_TODO_LIST = [
+    { id: 1, name: 'task 1', description: 'description 1', checked: false },
+    { id: 2, name: 'task 2', description: 'description 2', checked: false },
+    {
+        id: 3,
+        name: 'task 3',
+        description:
+            'so long task description 3 so long task description so long task description so long task description so long task description',
+        checked: true
+    }
+];
+
+function App() {
+    const [todos, setTodos] = useState(DEFAULT_TODO_LIST)
   return (
-    <>
-      <h1>Hello world</h1>
-    </>
+       <div className={styles.app_container}>
+          <div className={styles.container}>
+          </div>
+      </div>
   );
 }
 
