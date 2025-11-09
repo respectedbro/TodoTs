@@ -1,5 +1,6 @@
-export type TodoItem = {
+export type Todo = {
   id: number;
-  text: string;
+  name: string;
+  description: string;
   isCompleted: boolean;
 };

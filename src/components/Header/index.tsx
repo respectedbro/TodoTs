@@ -1,19 +1,15 @@
-import React from 'react';
+import React from "react";
 
-import './style.css'
+import "./style.css";
 
 interface HeaderProps {
-    todoCount:number
+  todoCount: number;
 }
 
-export const Header:React.FC<HeaderProps> = ({todoCount}) => {
-     console.log('header');
-    return (
-        <div className='header_container'>
-            <div className='header_title'>
-                Количество задач: {todoCount}
-            </div>
-
-        </div>
-    )
- }
+export const Header: React.FC<HeaderProps> = ({ todoCount }) => {
+  return (
+    <div className="header_container">
+      <div className="header_title">Количество задач: {todoCount}</div>
+    </div>
+  );
+};
