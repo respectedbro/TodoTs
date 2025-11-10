@@ -7,12 +7,14 @@ interface TodoItemProps {
   todo: Todo;
   checkTodo: (id: Todo["id"]) => void;
   deleteTodo: (id: Todo["id"]) => void;
+  selectTodoIdForEdit: (id: Todo["id"]) => void;
 }
 
 export const TodoItem: React.FC<TodoItemProps> = ({
   todo,
   checkTodo,
   deleteTodo,
+  selectTodoIdForEdit,
 }) => {
   return (
     <div className="todo_item_container">
@@ -37,7 +39,9 @@ export const TodoItem: React.FC<TodoItemProps> = ({
         </div>
       </div>
       <div className="todo_item_button_container">
-        <Button color="orange">Редактировать</Button>
+        <Button color="orange" onClick={() => selectTodoIdForEdit(todo.id)}>
+          Редактировать
+        </Button>
         <Button color="red" onClick={() => deleteTodo(todo.id)}>
           Удалить
         </Button>

@@ -21,6 +21,12 @@ const DEFAULT_TODO_LIST = [
 
 function App() {
   const [todos, setTodos] = useState(DEFAULT_TODO_LIST);
+  const [todoIdForEdit, setTodoIdForEdit] = useState<Todo["id"] | null>(null);
+
+  const selectTodoIdForEdit = (id: Todo["id"]) => {
+    setTodoIdForEdit(id);
+  };
+
   const addTodo = ({ name, description }: Omit<Todo, "isCompleted" | "id">) => {
     setTodos([
       ...todos,
@@ -48,12 +54,34 @@ function App() {
     setTodos(todos.filter((todo) => todo.id !== id));
   };
 
+  const changeTodo = ({
+    name,
+    description,
+  }: Omit<Todo, "id" | "isCompleted">) => {
+    setTodos(
+      todos.map((todo) => {
+        if (todo.id === todoIdForEdit) {
+          return { ...todo, name, description };
+        }
+        return todo;
+      })
+    );
+    setTodoIdForEdit(null);
+  };
+
   return (
     <div className="app_container">
       <div className="container">
         <Header todoCount={todos.length} />
-        <TodoPanel addTodo={addTodo} />
-        <TodoList todos={todos} checkTodo={checkTodo} deleteTodo={deleteTodo} />
+        <TodoPanel mode="add" addTodo={addTodo} />
+        <TodoList
+          todos={todos}
+          checkTodo={checkTodo}
+          deleteTodo={deleteTodo}
+          selectTodoIdForEdit={selectTodoIdForEdit}
+          todoIdForEdit={todoIdForEdit}
+          changeTodo={changeTodo}
+        />
       </div>
     </div>
   );
