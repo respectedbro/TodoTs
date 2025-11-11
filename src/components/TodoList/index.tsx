@@ -9,7 +9,6 @@ import { TodoPanel } from "../TodoPanel";
 interface TodoListProps {
   todos: Todo[];
   todoIdForEdit: Todo["id"] | null;
-  changeTodo: ({ name, description }: Omit<Todo, "isCompleted" | "id">) => void;
   checkTodo: (id: Todo["id"]) => void;
   deleteTodo: (id: Todo["id"]) => void;
   selectTodoIdForEdit: (id: Todo["id"]) => void;
@@ -21,7 +20,6 @@ export const TodoList: React.FC<TodoListProps> = ({
   deleteTodo,
   selectTodoIdForEdit,
   todoIdForEdit,
-  changeTodo,
 }) => {
   return (
     <div>
@@ -32,7 +30,6 @@ export const TodoList: React.FC<TodoListProps> = ({
               mode="edit"
               key={todo.id}
               editTodo={{ name: todo.name, description: todo.description }}
-              changeTodo={changeTodo}
             />
           );
         return (

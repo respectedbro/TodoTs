@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./style.css";
 import { Button } from "../Button";
 import type { Todo } from "../../types.ts";
+import { useTodo } from "../../contexts";
 
 const DEFAULT_TODO = {
   name: "",
@@ -10,18 +11,18 @@ const DEFAULT_TODO = {
 
 interface AddTodoPanelProps {
   mode: "add";
-  addTodo: ({ name, description }: Omit<Todo, "isCompleted" | "id">) => void;
 }
 
 interface EditTodoPanelProps {
   mode: "edit";
   editTodo: Omit<Todo, "id" | "isCompleted">;
-  changeTodo: ({ name, description }: Omit<Todo, "isCompleted" | "id">) => void;
 }
 
 type TodoPanelProps = AddTodoPanelProps | EditTodoPanelProps;
 
 export const TodoPanel: React.FC<TodoPanelProps> = (props) => {
+  const { changeTodo, addTodo } = useTodo();
+
   const isEdit = props.mode === "edit";
 
   const [todo, setTodo] = useState(isEdit ? props.editTodo : DEFAULT_TODO);
@@ -34,10 +35,10 @@ export const TodoPanel: React.FC<TodoPanelProps> = (props) => {
   const handleOnClick = () => {
     const todoItem = { name: todo.name, description: todo.description };
     if (isEdit) {
-      return props.changeTodo(todoItem);
+      return changeTodo(todoItem);
     }
 
-    props.addTodo(todoItem);
+    addTodo(todoItem);
     setTodo(DEFAULT_TODO);
   };
   return (

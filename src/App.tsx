@@ -6,6 +6,7 @@ import { TodoPanel } from "./components/TodoPanel";
 import "./App.css";
 import type { Todo } from "./types.ts";
 import { TodoList } from "./components/TodoList";
+import { TodoProvider } from "./contexts";
 
 const DEFAULT_TODO_LIST = [
   { id: 1, name: "task 1", description: "description 1", isCompleted: false },
@@ -27,18 +28,6 @@ function App() {
     setTodoIdForEdit(id);
   };
 
-  const addTodo = ({ name, description }: Omit<Todo, "isCompleted" | "id">) => {
-    setTodos([
-      ...todos,
-      {
-        id: todos[todos.length - 1].id + 1,
-        description,
-        name,
-        isCompleted: false,
-      },
-    ]);
-  };
-
   const checkTodo = (id: Todo["id"]) => {
     setTodos(
       todos.map((todo) => {
@@ -54,36 +43,22 @@ function App() {
     setTodos(todos.filter((todo) => todo.id !== id));
   };
 
-  const changeTodo = ({
-    name,
-    description,
-  }: Omit<Todo, "id" | "isCompleted">) => {
-    setTodos(
-      todos.map((todo) => {
-        if (todo.id === todoIdForEdit) {
-          return { ...todo, name, description };
-        }
-        return todo;
-      })
-    );
-    setTodoIdForEdit(null);
-  };
-
   return (
-    <div className="app_container">
-      <div className="container">
-        <Header todoCount={todos.length} />
-        <TodoPanel mode="add" addTodo={addTodo} />
-        <TodoList
-          todos={todos}
-          checkTodo={checkTodo}
-          deleteTodo={deleteTodo}
-          selectTodoIdForEdit={selectTodoIdForEdit}
-          todoIdForEdit={todoIdForEdit}
-          changeTodo={changeTodo}
-        />
+    <TodoProvider>
+      <div className="app_container">
+        <div className="container">
+          <Header />
+          <TodoPanel mode="add" />
+          <TodoList
+            todos={todos}
+            checkTodo={checkTodo}
+            deleteTodo={deleteTodo}
+            selectTodoIdForEdit={selectTodoIdForEdit}
+            todoIdForEdit={todoIdForEdit}
+          />
+        </div>
       </div>
-    </div>
+    </TodoProvider>
   );
 }
 
