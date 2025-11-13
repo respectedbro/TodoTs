@@ -1,26 +1,14 @@
 import React from "react";
 
-import type { Todo } from "../../types.ts";
-
 import "../TodoList/style.css";
-import { TodoItem } from "./TodoItem";
+import { useTodo } from "../../contexts";
 import { TodoPanel } from "../TodoPanel";
+import { TodoItem } from "./TodoItem";
 
-interface TodoListProps {
-  todos: Todo[];
-  todoIdForEdit: Todo["id"] | null;
-  checkTodo: (id: Todo["id"]) => void;
-  deleteTodo: (id: Todo["id"]) => void;
-  selectTodoIdForEdit: (id: Todo["id"]) => void;
-}
+export const TodoList: React.FC = () => {
+  const { todos, todoIdForEdit, checkTodo, selectTodoIdForEdit, deleteTodo } =
+    useTodo();
 
-export const TodoList: React.FC<TodoListProps> = ({
-  todos,
-  checkTodo,
-  deleteTodo,
-  selectTodoIdForEdit,
-  todoIdForEdit,
-}) => {
   return (
     <div>
       {todos.map((todo) => {

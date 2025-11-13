@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import type { Todo } from "../../types.ts";
 import { TodoContext } from "./TodoContext.ts";
 
@@ -22,53 +22,55 @@ export const TodoProvider: React.FC<TodoProviderProps> = ({ children }) => {
   const [todos, setTodos] = useState(DEFAULT_TODO_LIST);
   const [todoIdForEdit, setTodoIdForEdit] = useState<Todo["id"] | null>(null);
 
-  const selectTodoIdForEdit = (id: Todo["id"]) => {
+  const selectTodoIdForEdit = useCallback((id: Todo["id"]) => {
     setTodoIdForEdit(id);
-  };
+  }, []);
 
-  const addTodo = ({ name, description }: Omit<Todo, "isCompleted" | "id">) => {
-    setTodos([
-      ...todos,
-      {
-        id: todos[todos.length - 1].id + 1,
-        description,
-        name,
-        isCompleted: false,
-      },
-    ]);
-  };
-
-  const checkTodo = (id: Todo["id"]) => {
-    setTodos(
-      todos.map((todo) => {
+  const addTodo = useCallback(
+    ({ name, description }: Omit<Todo, "isCompleted" | "id">) => {
+      setTodos((prevTodos) => [
+        ...prevTodos,
+        {
+          id: prevTodos.length > 0 ? prevTodos[prevTodos.length - 1].id + 1 : 1,
+          description,
+          name,
+          isCompleted: false,
+        },
+      ]);
+    },
+    []
+  );
+  const checkTodo = useCallback((id: Todo["id"]) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) => {
         if (todo.id === id) {
           return { ...todo, isCompleted: !todo.isCompleted };
         }
         return todo;
       })
     );
-  };
+  }, []);
 
-  const deleteTodo = (id: Todo["id"]) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
-  };
+  const deleteTodo = useCallback((id: Todo["id"]) => {
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+  }, []);
 
-  const changeTodo = ({
-    name,
-    description,
-  }: Omit<Todo, "id" | "isCompleted">) => {
-    setTodos(
-      todos.map((todo) => {
-        if (todo.id === todoIdForEdit) {
-          return { ...todo, name, description };
-        }
-        return todo;
-      })
-    );
-    setTodoIdForEdit(null);
-  };
+  const changeTodo = useCallback(
+    ({ name, description }: Omit<Todo, "id" | "isCompleted">) => {
+      setTodos((prevTodos) =>
+        prevTodos.map((todo) => {
+          if (todo.id === todoIdForEdit) {
+            return { ...todo, name, description };
+          }
+          return todo;
+        })
+      );
+      setTodoIdForEdit(null);
+    },
+    [todoIdForEdit]
+  );
 
-  const value = React.useMemo(
+  const value = useMemo(
     () => ({
       todoIdForEdit,
       todos,
