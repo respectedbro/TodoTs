@@ -3,13 +3,23 @@ import type { Todo } from "../../types.ts";
 import { TodoContext } from "./TodoContext.ts";
 
 const DEFAULT_TODO_LIST = [
-  { id: 1, name: "task 1", description: "description 1", isCompleted: false },
-  { id: 2, name: "task 2", description: "description 2", isCompleted: false },
+  {
+    id: 1,
+    name: "задача 1",
+    description: "Lorem ipsum dolor sit amet",
+    isCompleted: false,
+  },
+  {
+    id: 2,
+    name: "задача 2",
+    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+    isCompleted: false,
+  },
   {
     id: 3,
-    name: "task 3",
+    name: "задача 3",
     description:
-      "so long task description 3 so long task description so long task description so long task description so long task description",
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam animi assumenda dolore laudantium sequi vitae!",
     isCompleted: true,
   },
 ];
